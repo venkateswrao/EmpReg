@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
 Design by TEMPLATED
@@ -12,6 +10,13 @@ Version    : 1.0
 Released   : 20140322
 
 -->
+<?php
+
+require_once('insert.php');
+
+?>
+
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
@@ -124,9 +129,11 @@ $(document).ready(function(){
 <div id="footer">
 <div id="Sign-Up">
  <fieldset style="width:30%;margin-left:32%;">
-
- <table border="0">
- <form method="POST" name="reg" action="insert.php"   enctype="multipart/form-data">
+<div style="color: red;font-weight: bold;font-size: 12px; font-family: verdana;"><?php if(isset($sucess)){ echo $sucess; }?></div>
+ <table border="0" width="400px">
+ <form method="POST" name="reg" action="register.php"   enctype="multipart/form-data">
+ <tr style="font-weight: bold;font-size: 24px;"><td colspan="2">Register Here</td></tr>
+ <tr><td colspan="2" height="20"></td></tr>
  <tr><td><label>Name</label></td> 
   <td> <input type="text" name="name" id="name" class="form-control"></td> </tr>
   <tr><td><label>Email</label></td> 
@@ -136,8 +143,7 @@ $(document).ready(function(){
   <tr><td><label>Phoneno</label></td> 
 <td> <input  type="text" name="phno" id="phno" maxlength="30" size="30" class="form-control"></td></tr>
 <tr><td><label>City</label></td>
-<td class="dropdown"> <select name="city" id="city" class="btn dropdown-toggle" id="dropdownMenu1" 
-      data-toggle="dropdown">
+<td class="dropdown"> <select name="city" id="city" class="btn dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" style="width: 326px; text-align: left;">
 
   <option value="hyd">hyd</option>
   <option value="chennai">chennai</option>
@@ -146,10 +152,12 @@ $(document).ready(function(){
 </select></td></tr>
 
 <tr><td><label>Profile pic</label></td>
-<span class="btn btn-default btn-file">
+<!--<span class="btn btn-default btn-file"></span>-->
 <td><input type="file" name="pic" id="pic" ></td></tr>
-</span>
- <tr><td></td> <td><input id="button" type="submit" name="submit" value="Sign-Up" class="btn btn-info"></td> </tr> 
+<tr><td colspan="2" height="20"></td></tr>
+
+ <tr><td></td><td align="center"><input id="button" type="submit" name="submit" value="Sign-Up" class="btn btn-info"></td> </tr> 
+ 
  
  
  </form> 

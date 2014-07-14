@@ -1,6 +1,7 @@
 <?php
 include ('connect.php');
 session_start();
+error_reporting(0);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -17,6 +18,51 @@ Released   : 20140322
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<script type="text/javascript">
+function ConfirmDelete()
+{
+ // var empids1=0;
+   //empids1=form['empids'];
+   var empids1=document.getElementsByName("empids[]");
+  var count=document.getElementById("count").value;
+  var flag = 0;
+ 
+  for(var i=0;i<count;i++){
+  if(empids1[i]){
+          if(empids1[i].checked==false){
+
+	      flag ++;
+		}
+		}
+    }
+	
+	   if (flag != 1) {
+		   alert ("You must check one and only one checkbox!");
+		   return false;
+		   }
+	var x = confirm("Are you sure you want to delete?");
+      if (x){
+      return true;
+  }
+  else{
+    return false;
+  }
+		   
+  
+  
+  
+}
+function ConfirmActive()
+{
+var x = confirm("Are you sure you want to activate?");
+  if (x)
+      return true;
+  else
+    return false;
+}
+
+
+</script>
 <style type="text/css">
     .Table
     {
@@ -66,11 +112,13 @@ Released   : 20140322
 //delete the selected records
 if(isset($_POST['delete'])){
 $checkbox = $_POST['empids'];
-
 if (is_array($checkbox)) {
 foreach ($checkbox as $key => $del_id) {
+echo "$del_id";
 $sql = "DELETE FROM empdata WHERE id='$del_id'";
 $result = mysql_query($sql);
+header('location:deletsucess.php');
+
 }
 }
 }
@@ -86,6 +134,8 @@ if (is_array($checkbox)) {
 foreach ($checkbox as $key => $del_id) {
 $sql = "update empdata set flag=1 where id='$del_id'";
 $result = mysql_query($sql);
+header('location:savesucess.php');
+
 }
 }
 }
@@ -108,7 +158,7 @@ $result = mysql_query($sql);
 }
 ?>
 
-<form action="" method="POST">
+<form action="" method="POST" name="form">
 <div id="header-wrapper">
 	<div id="header" class="container">
 		<div id="logo">
@@ -185,11 +235,13 @@ while ($row = mysql_fetch_array($records)) {
 	<div class="Table">
    <div class="Row" align="center">
         <div class="Cell">
-            <p> <input type="checkbox" name="empids[]"  value="<?php echo $id?>" /></p>
+            <p> <input type="checkbox" name="empids[]" id="empids[]"  value="<?php echo $id?>" /></p>
+			 <input type="hidden" name="count" id="count"  value="<?php echo $numofrecords; ?>" />
         </div>
         <div class="Cell">
 		 
-            <p><img src="<?php echo $picture ?>" width="50" height="50" alt="no image found"/></p>
+            <p><img src="<?php echo $picture ?>" width="50" height="50" alt="no image found" style="margin-top: 15px;" /><br /><a href="fileupload.php?id=<?php echo $id; ?>" style="text-decoration: none;">Change</a></p>
+			
         </div>
         <div class="Cell">
             <p><?php echo $name ?></p>
@@ -211,7 +263,7 @@ while ($row = mysql_fetch_array($records)) {
                 </div>
   
     <div class="Cell">
-           <p><input type="checkbox" name="active[]" id="checkbox[]" value="<?php echo $id?>">Active</p>
+           <p><input type="checkbox" name="active[]" id="checkbox[]" value="<?php echo $id?>" "javascript:return ConfirmActive()";>Active</p>
                 </div>
    
     <div class="Cell">
@@ -278,14 +330,10 @@ if ($totalpages > 1) {
  
 
 
-
+<div><br /><br /><br /><br /><br /><br /></div>
 <div>
-<p><input name="delete" type="submit" id="delete" value="Delete"></p>
+<p><input name="delete" type="submit" id="delete" value="Delete" Onclick="javascript:return ConfirmDelete()";>&nbsp;<input name="save" type="submit" id="save" value="save"></p>
 </div>
-<div>
-<p><input name="save" type="submit" id="save" value="save"></p>
-</div>
-
 	
 </div>
 </form>

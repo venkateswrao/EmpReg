@@ -1,8 +1,8 @@
 <?php
 include ('connect.php');
-session_start();
+//session_start();
 //error_reporting(0);
-$_SESSION['id']=$row['id'];
+//$_SESSION['id']=$row['id'];
 if (isset ( $_POST ['submit'] )) {
 	
 	 $name = $_POST ['name'];	
@@ -14,6 +14,15 @@ if (isset ( $_POST ['submit'] )) {
 	 $pic_size = $_FILES ['pic']['size'];
 	 $pic_type = $_FILES ['pic']['type'];
 	 $pic_path = 'upload/'.$pic_name; 
+	 
+	 $sel = mysql_query("SELECT email FROM empdata WHERE email = '".$email."'");
+	 $res = mysql_fetch_array($sel);
+	 
+	 if($res > 0)
+	 {
+		$sucess = 'Already Registered with this E-mail Address';
+	 
+	 }else{	 
 	
 	$query = "INSERT INTO empdata (name,email,pass,phno,city,pic) VALUES('$name','$email','$pass','$phno', '$city','$pic_path')";
 	$send = mysql_query ( $query ) or die ( mysql_error () );
@@ -44,10 +53,14 @@ $extension = end($temp);
       "upload/" . $_FILES["pic"]["name"]);
       //echo "Stored in: " . "upload/" . $_FILES["pic"]["name"];
      
-     header('location:sucess.php');
+    // header('location:sucess.php');
+	
+	$sucess = 'Sucessfully Created';
    
     
     }
+	
+	}
   }
  
 
