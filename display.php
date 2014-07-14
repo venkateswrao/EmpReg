@@ -149,20 +149,40 @@ $result = mysql_query($sql);
             <p>city</p>
         </div>
     </div> -->
-	 <?php 
+	 <?php
 
+@ $page = $_GET['page'];
+if (!$page) {
 
- $result = mysql_query("SELECT * FROM empdata");
- while($row = mysql_fetch_array($result))
- {
- 	$picture=$row['pic'];
- 	$name=$row['name'];
- 	$email=$row['email'];
- 	$phno=$row['phno'];
- 	$city=$row['city'];
- 	$id=$row['id'];
- ?>
-<div class="Table">
+	$page = 1;
+
+}
+$records = mysql_query("select * from empdata");
+$numofrecords = mysql_num_rows($records);
+
+$perpage = 2;
+
+$totalpages = ceil($numofrecords / $perpage);
+
+if ($page > $totalpages) {
+
+	$page = 1;
+}
+
+$pointer = 0;
+
+mysql_data_seek($records, ($page -1) * $perpage);
+
+while ($row = mysql_fetch_array($records)) {
+      $picture=$row['pic'];
+      $name=$row['name'];
+       $email=$row['email'];
+       $phno=$row['phno'];
+       $city=$row['city'];
+       $id=$row['id'];
+	$pointer = $pointer +1;
+?>
+	<div class="Table">
    <div class="Row" align="center">
         <div class="Cell">
             <p> <input type="checkbox" name="empids[]"  value="<?php echo $id?>" /></p>
@@ -202,7 +222,62 @@ $result = mysql_query($sql);
    </div>
    
 </div>
-<?php } ?>
+<?php 
+	if ($pointer == $perpage) {
+
+		break;
+
+	}
+
+}
+
+if ($totalpages > 1) {
+
+	if ($page > 1) {
+
+		$prev = $page -1;
+?>
+		<a href="display.php?page=<?php echo $prev; ?>">Prev</a> 
+		
+
+	<?php
+
+	}
+
+	for ($i = 1; $i < $totalpages; $i++) {
+
+		if ($i != $page) {
+?>	
+		<a href="display.php?page=<?php echo $i; ?>"><?php echo $i; ?></a> 
+				
+	<?php
+
+		} else {
+?>
+				
+				<font color="red" ><?php echo $i?></font>
+				
+		<?php
+
+		}
+
+	}
+
+	if ($page < $totalpages) {
+
+		$next = $page +1;
+?>
+		<a href="display.php?page=<?php echo $next; ?>">next</a> 
+		
+<?php
+
+	}
+
+}
+?>
+ 
+
+
 
 <div>
 <p><input name="delete" type="submit" id="delete" value="Delete"></p>
